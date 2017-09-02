@@ -12,6 +12,25 @@ namespace ProyectoCalculadora.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            var connString = "";
+            var connStringName = "DB1-ConnectionString";
+            var websiteName = "/ProyectoCalculadora";
+
+            System.Configuration.ConnectionStringSettings connStringSetting;
+            
+            System.Configuration.Configuration rootWebConfig =
+                System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration(websiteName);
+            
+            if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
+            {
+                connStringSetting =
+                    rootWebConfig.ConnectionStrings.ConnectionStrings[connStringName];
+                if (connStringSetting != null)
+                    connString = connStringSetting.ConnectionString;
+
+                ViewBag.connectionString = connString;
+            }
+
             return View();
         }
 
