@@ -18,14 +18,8 @@ namespace ProyectoCalculadora.Controllers
         [HttpPost]
         public ActionResult Index(CalculadoraModel model)
         {
-            if (model.operacion == "+")
-            {
-                int resultado = model.numero1 + model.numero2;
-                ViewBag.resultado = resultado;
-            }
-            else
-            {
-            }
+            int resultado = 0;
+            ViewBag.resultado = resultado;
 
             return View();
         }
