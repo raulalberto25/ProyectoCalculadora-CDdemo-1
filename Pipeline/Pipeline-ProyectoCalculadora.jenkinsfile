@@ -1,0 +1,44 @@
+#!groovy
+def fullSemVer	= ''
+def msbuildLocation = "'C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\amd64\\MSBuild.exe'"
+def nugetLocation = "'C:\\NuGet\\nuget.exe'"
+def branchName = "develop"
+def repoDevops = 'DevOps-CI-CD'
+def repoUrl = "https://github.com/jjruescas/ProyectoCalculadora-CDdemo"
+
+pipeline {
+    agent any
+    
+    stages {
+        stage ('Checkout') {
+            steps {
+                checkout([
+					$class: 'GitSCM', 					
+				    branches: [[name: "${branchName}"]], 
+				    doGenerateSubmoduleConfigurations: false,				    
+				    extensions: [
+			          [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: 120]			          
+				    ],				    
+					userRemoteConfigs: [[url: "${repoUrl}"]]			    
+				])
+            }
+        }
+        
+        stage ('Pre-Building Steps') {
+            steps {
+                powershell 'Write-Output "******************** Restore Nuget  ************************"'
+                powershell "& ${nugetLocation} restore ProyectoCalculadora.sln"
+                
+                powershell 'Write-Output "******************** Clean Solution  ************************"'
+                powershell "& ${msbuildLocation} ProyectoCalculadora.sln /t:Clean /p:Configuration=Release"
+            }
+        }
+        
+        stage ('Build & Publish Website') {
+            steps {
+                powershell 'Write-Output "******************** Build & Publish Solution  ************************"'
+                powershell "& ${msbuildLocation} /p:DeployOnBuild=true /p:PublishProfile=Profile-Deploy-to-ArtifactRepo"
+            }
+        }
+    }
+}
