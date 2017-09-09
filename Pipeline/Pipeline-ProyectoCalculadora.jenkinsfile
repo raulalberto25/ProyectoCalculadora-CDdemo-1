@@ -1,7 +1,8 @@
 #!groovy
 def msbuildLocation = "'C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\amd64\\MSBuild.exe'"
 def nugetLocation = "'C:\\NuGet\\nuget.exe'"
-def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora"
+def artifactRepo = "C:\\ArtifactRepo\\ProyectoCalculadora"
+def publishUrl = ${artifactRepo} + "\" + ${env.BUILD_NUMBER}
 
 pipeline {
     agent any
