@@ -38,7 +38,7 @@ pipeline {
         stage ('Build & Publish Website') {
             steps {
                 powershell 'Write-Output "******************** Build & Publish Solution  ************************"'
-                powershell "& ${msbuildLocation} /p:DeployOnBuild=true /p:PublishProfile=Profile-Deploy-to-ArtifactRepo"
+                powershell "& ${msbuildLocation} ProyectoCalculadora.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl=C:\ArtifactRepo\ProyectoCalculadora"
             }
         }
     }
