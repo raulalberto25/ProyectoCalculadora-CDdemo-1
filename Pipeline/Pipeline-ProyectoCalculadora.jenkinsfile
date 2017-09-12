@@ -27,11 +27,11 @@ pipeline {
         stage ('Deploy') {
             steps {
                 powershell 'Write-Output "******************** Deploy to Website Folder  ************************"'
-                powershell "$origen = 'C:\\ArtifactRepo\\ProyectoCalculadora\\2'
-                            $destino = 'C:\\Websites\\ProyectoCalculadora-Team1'
+                powershell '''$origen = "C:\\ArtifactRepo\\ProyectoCalculadora\\2"
+                            $destino = "C:\\Websites\\ProyectoCalculadora-Team1"
 
-                            Write-Output 'Moviendo carpeta a destino....'
-                            Copy-Item $origen $destino -recurse -force"
+                            Write-Output "Moviendo carpeta a destino...."
+                            Copy-Item $origen $destino -recurse -force'''
             }
         }
     }
