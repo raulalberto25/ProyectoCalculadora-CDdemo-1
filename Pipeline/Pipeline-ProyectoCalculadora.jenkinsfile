@@ -2,6 +2,8 @@
 def msbuildLocation = "'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\amd64\\MSBuild.exe'"
 def nugetLocation = "'C:\\NuGet\\nuget.exe'"
 def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
+def artifactRepo = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
+def productionWebsiteLocation = "C:\\Websites\\ProyectoCalculadora-${params.TEAM}"
 
 pipeline {
     agent any
@@ -36,8 +38,7 @@ pipeline {
         stage ('Deploy') {
             steps {
                 powershell 'Write-Output "******************** Deploy to Website Folder  ************************"'
-                def origen = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
-                def destino = "C:\\Websites\\ProyectoCalculadora-${params.TEAM}"
+                
                 /*powershell '''$origen = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\"
                             $destino = "C:\\Websites\\ProyectoCalculadora-${params.TEAM}"
 
@@ -46,7 +47,7 @@ pipeline {
                             */
                 powershell "Copy-Item 'C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\*' 'C:\\Websites\\ProyectoCalculadora-${params.TEAM}' -recurse -force"
                 
-                powershell "cd ${destino}; ls;"
+                powershell "cd ${productionWebsiteLocation}; ls;"
 
             }
         }
