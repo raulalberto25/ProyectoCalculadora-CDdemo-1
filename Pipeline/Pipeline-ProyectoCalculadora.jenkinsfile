@@ -6,6 +6,10 @@ def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${env.BUILD_NUMBER}"
 pipeline {
     agent any
     
+    parameters {
+        choice(name: 'Team', choices: 'Team1\nTeam2\nTeam3', description: 'Team #')        
+    }
+    
     stages {
     /*    stage ('Pre-Building Steps') {
             steps {
