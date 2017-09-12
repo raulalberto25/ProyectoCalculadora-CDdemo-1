@@ -6,7 +6,7 @@ def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${env.BUILD_NUMBER}"
 pipeline {
     agent any
     
-    stages {
+    /*stages {
         stage ('Pre-Building Steps') {
             steps {
                 powershell 'Write-Output "******************** Restore Nuget  ************************"'
@@ -17,10 +17,21 @@ pipeline {
             }
         }
         
-        stage ('Build & Publish Website') {
+        stage ('Build & Publish Website to Artifact Repo') {
             steps {
                 powershell 'Write-Output "******************** Build & Publish Solution  ************************"'
                 powershell "& ${msbuildLocation} ProyectoCalculadora.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl=${publishUrl}"
+            }
+        }
+        */
+        stage ('Deploy') {
+            steps {
+                powershell 'Write-Output "******************** Deploy to Website Folder  ************************"'
+                powershell "$origen = 'C:\\ArtifactRepo\\ProyectoCalculadora\\2'
+                            $destino = 'C:\\Websites\\ProyectoCalculadora-Team1'
+
+                            Write-Output 'Moviendo carpeta a destino....'
+                            Copy-Item $origen $destino -recurse -force"
             }
         }
     }
