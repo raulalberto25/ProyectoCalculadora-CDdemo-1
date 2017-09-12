@@ -25,6 +25,10 @@ pipeline {
             steps {
                 powershell 'Write-Output "******************** Build & Publish Solution  ************************"'
                 powershell "& ${msbuildLocation} ProyectoCalculadora.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl=${publishUrl}"
+                
+                powershell 'Write-Output "********************************************"'
+                powershell 'Write-Output "The Project was published in: ${publishUrl}"'
+                powershell 'Write-Output "********************************************"'
             }
         }
         
