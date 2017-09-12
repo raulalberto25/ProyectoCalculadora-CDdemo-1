@@ -28,6 +28,7 @@ pipeline {
                 
                 powershell 'Write-Output "********************************************"'
                 powershell 'Write-Output "The Project was published in: ${publishUrl}"'
+                powershell 'Write-Output "Team #: ${params.TEAM}"'
                 powershell 'Write-Output "********************************************"'
             }
         }
