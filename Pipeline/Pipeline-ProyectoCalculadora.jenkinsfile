@@ -42,7 +42,7 @@ pipeline {
                             Write-Output "Moviendo carpeta origen [$origen] a destino [$destino]...."
                             Copy-Item $origen $destino -recurse -force'''
                             */
-                powershell "Copy-Item 'C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\' 'C:\\Websites\\ProyectoCalculadora-${params.TEAM}' -recurse -force"
+                powershell "Copy-Item 'C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\*' 'C:\\Websites\\ProyectoCalculadora-${params.TEAM}' -recurse -force"
 
             }
         }
