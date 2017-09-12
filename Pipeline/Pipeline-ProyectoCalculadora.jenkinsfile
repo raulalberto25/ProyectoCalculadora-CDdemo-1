@@ -1,17 +1,17 @@
 #!groovy
 def msbuildLocation = "'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\amd64\\MSBuild.exe'"
 def nugetLocation = "'C:\\NuGet\\nuget.exe'"
-def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${env.BUILD_NUMBER}"
+def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
 
 pipeline {
     agent any
     
     parameters {
-        choice(name: 'Team', choices: 'Team1\nTeam2\nTeam3', description: 'Team #')        
+        choice(name: 'TEAM', choices: 'Team1\nTeam2\nTeam3', description: 'Team #')        
     }
     
     stages {
-    /*    stage ('Pre-Building Steps') {
+        stage ('Pre-Building Steps') {
             steps {
                 powershell 'Write-Output "******************** Restore Nuget  ************************"'
                 powershell "& ${nugetLocation} restore ProyectoCalculadora.sln"
@@ -27,12 +27,12 @@ pipeline {
                 powershell "& ${msbuildLocation} ProyectoCalculadora.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl=${publishUrl}"
             }
         }
-        */
+        
         stage ('Deploy') {
             steps {
                 powershell 'Write-Output "******************** Deploy to Website Folder  ************************"'
                 powershell '''$origen = "C:\\ArtifactRepo\\ProyectoCalculadora\\2"
-                            $destino = "C:\\Websites\\ProyectoCalculadora-Team1"
+                            $destino = "C:\\Websites\\ProyectoCalculadora-${params.TEAM}"
 
                             Write-Output "Moviendo carpeta a destino...."
                             Copy-Item $origen $destino -recurse -force'''
