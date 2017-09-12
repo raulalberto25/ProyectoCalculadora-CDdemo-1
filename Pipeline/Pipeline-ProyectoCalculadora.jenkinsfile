@@ -6,8 +6,8 @@ def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${env.BUILD_NUMBER}"
 pipeline {
     agent any
     
-    /*stages {
-        stage ('Pre-Building Steps') {
+    stages {
+    /*    stage ('Pre-Building Steps') {
             steps {
                 powershell 'Write-Output "******************** Restore Nuget  ************************"'
                 powershell "& ${nugetLocation} restore ProyectoCalculadora.sln"
