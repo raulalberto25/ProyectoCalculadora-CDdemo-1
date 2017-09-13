@@ -29,8 +29,9 @@ pipeline {
                 powershell "& ${msbuildLocation} ProyectoCalculadora.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl=${publishUrl}"
                 
                 powershell 'Write-Output "********************************************"'
-                echo "The Project was published in: ${publishUrl}"
+                echo "The Project was published in ArtifactRepo: ${publishUrl}"
                 echo "Team #: ${params.TEAM}"
+                powershell "${publishUrl} | ls;"
                 powershell 'Write-Output "********************************************"'
             }
         }
@@ -42,8 +43,7 @@ pipeline {
                 powershell "Copy-Item 'C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\*' 'C:\\Websites\\ProyectoCalculadora-${params.TEAM}' -recurse -force"
                 
                 echo "**************************** Content of Deployed Website  ****************************"
-                
-                powershell "cd ${productionWebsiteLocation}; ls;"
+                powershell "${productionWebsiteLocation} | ls;"
 
             }
         }
