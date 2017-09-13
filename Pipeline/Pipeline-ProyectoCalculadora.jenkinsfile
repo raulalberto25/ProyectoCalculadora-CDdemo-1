@@ -1,10 +1,16 @@
 #!groovy
 def msbuildLocation = "'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\amd64\\MSBuild.exe'"
 def nugetLocation = "'C:\\NuGet\\nuget.exe'"
-def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${env.BUILD_NUMBER}"
+def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
+def artifactRepo = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
+def productionWebsiteLocation = "C:\\Websites\\ProyectoCalculadora-${params.TEAM}"
 
 pipeline {
     agent any
+    
+    parameters {
+        choice(name: 'TEAM', choices: 'Team1\nTeam2\nTeam3\nTeam4\nTeam5\nTeam6\nTeam7', description: 'Team #')        
+    }
     
     stages {
         stage ('Pre-Building Steps') {
@@ -17,12 +23,28 @@ pipeline {
             }
         }
         
-        stage ('Build & Publish Website') {
+        stage ('Build & Publish Website to Artifact Repo') {
             steps {
                 powershell 'Write-Output "******************** Build & Publish Solution  ************************"'
                 powershell "& ${msbuildLocation} ProyectoCalculadora.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:publishUrl=${publishUrl}"
-
+                
+                powershell 'Write-Output "********************************************"'
+                echo "The Project was published in ArtifactRepo: ${publishUrl}"
+                echo "Team #: ${params.TEAM}"
                 powershell "'${publishUrl}' | ls;"
+                powershell 'Write-Output "********************************************"'
+            }
+        }
+        
+        stage ('Deploy') {
+            steps {
+                powershell 'Write-Output "******************** Deploy to Website Folder  ************************"'
+                
+                powershell "Copy-Item 'C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\*' 'C:\\Websites\\ProyectoCalculadora-${params.TEAM}' -recurse -force"
+                
+                echo "**************************** Content of Deployed Website  ****************************"
+                powershell "'${productionWebsiteLocation}' | ls;"
+
             }
         }
     }
