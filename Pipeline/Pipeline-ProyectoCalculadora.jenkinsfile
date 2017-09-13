@@ -31,7 +31,7 @@ pipeline {
                 powershell 'Write-Output "********************************************"'
                 echo "The Project was published in ArtifactRepo: ${publishUrl}"
                 echo "Team #: ${params.TEAM}"
-                powershell "${publishUrl} | ls;"
+                powershell "'${publishUrl}' | ls;"
                 powershell 'Write-Output "********************************************"'
             }
         }
@@ -43,7 +43,7 @@ pipeline {
                 powershell "Copy-Item 'C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}\\*' 'C:\\Websites\\ProyectoCalculadora-${params.TEAM}' -recurse -force"
                 
                 echo "**************************** Content of Deployed Website  ****************************"
-                powershell "${productionWebsiteLocation} | ls;"
+                powershell "'${productionWebsiteLocation}' | ls;"
 
             }
         }
