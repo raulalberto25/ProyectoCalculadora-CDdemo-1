@@ -1,5 +1,6 @@
 #!groovy
 def msbuildLocation = "'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\amd64\\MSBuild.exe'"
+def nunitLocation = "'C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe'"
 def nugetLocation = "'C:\\NuGet\\nuget.exe'"
 def publishUrl = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
 def artifactRepo = "C:\\ArtifactRepo\\ProyectoCalculadora\\${params.TEAM}"
@@ -9,7 +10,7 @@ pipeline {
     agent any
     
     parameters {
-        choice(name: 'TEAM', choices: 'Team1\nTeam2\nTeam3\nTeam4\nTeam5\nTeam6\nTeam7', description: 'Team #')        
+        choice(name: 'TEAM', choices: 'Team1\nTeam2\nTeam3\nTeam4\nTeam5\nTeam6\nTeam7\nProduction', description: 'Team #')        
     }
     
     stages {
@@ -34,6 +35,13 @@ pipeline {
                 powershell "'${publishUrl}' | ls;"
                 powershell 'Write-Output "********************************************"'
             }
+        }
+		
+		stage ('Run Unit Tests') {
+            steps {
+                powershell 'Write-Output "******************** Run Unit Tests  ************************"'
+                powershell "& ${nunitLocation} .\\NUnit-ProyectoCalculadora\\bin\\Debug\\NUnit-ProyectoCalculadora.dll"
+			}
         }
         
         stage ('Deploy') {
